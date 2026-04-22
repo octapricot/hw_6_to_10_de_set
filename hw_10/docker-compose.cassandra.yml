@@ -1,0 +1,26 @@
+services:
+
+  cassandra:
+    image: cassandra:4.1
+    container_name: hw10_cassandra
+    ports:
+      - "9044:9042"
+    environment:
+      - CASSANDRA_CLUSTER_NAME=hw10_cluster
+    volumes:
+      - cassandra_data:/var/lib/cassandra
+    healthcheck:
+      test: ["CMD", "cqlsh", "-e", "describe keyspaces"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 60s
+    networks:
+      - hw10_network
+
+volumes:
+  cassandra_data:
+
+networks:
+  hw10_network:
+    driver: bridge
